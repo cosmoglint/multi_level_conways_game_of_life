@@ -1,3 +1,5 @@
+var testl;
+
 function makearray(x,y){
   let arr = new Array(x);
   for (let i = 0; i < arr.length; i++){
@@ -17,8 +19,8 @@ function fill_2d_array(arr,xm){
 
 			}
 			else{
-			  arr[i][j].alive = Boolean(floor(random(2)));
-        arr[i][j].alive==0 ? arr[i][j].live_val=0 : arr[i][j].live_val=floor(random(1,5));
+        arr[i][j].live_val=floor(random(0,5));
+        arr[i][j].live_val==0 ? arr[i][j].alive=false : arr[i][j].alive = true;
 			}
 		}
 	}
@@ -43,26 +45,22 @@ function conway(lst){
 			neigh = 0;
 			newlst[i][j] = new cell(i,j);
 			for (indices of blocks){
-				neigh += lst[(indices[0]+xrows)%xrows][(indices[1]+yrows)%yrows].alive ? 1 : 0;
+				neigh += lst[(indices[0]+xrows)%xrows][(indices[1]+yrows)%yrows].live_val<thecell.live_val ? 1 : 0;
 			}
-			if (neigh == 3 && thecell.alive == false){
-        newlst[i][j].live_val += 1;
-				newlst[i][j].alive = true;
+			if (neigh == 3){
+        newlst[i][j].increaser();
 			}
-			else if(neigh <= 1 && thecell.alive == true){
-        newlst[i][j].live_val -= 1;
-				newlst[i][j].alive = false;
+			else if(neigh <= 1){
+        newlst[i][j].decreaser();
 			}
-			else if(neigh >= 4 && thecell.alive == true){
-        newlst[i][j].live_val -= 1;
-				newlst[i][j].alive = false;
+			else if(neigh >= 4){
+        newlst[i][j].decreaser();
 			}
-			else if((neigh == 2 || neigh == 3) && thecell.alive == true){
-        newlst[i][j].live_val += 1;
-				newlst[i][j].alive = lst[i][j].alive;
+			else if((neigh == 2 || neigh == 3)){
+        newlst[i][j].live_val = newlst[i][j].live_val;
 			}
 			else{
-        newlst[i][j].live_val += 1;
+        newlst[i][j].increaser();
 				newlst[i][j].alive = lst[i][j].alive;
 			}
 		}
@@ -80,7 +78,7 @@ function resetsketch(){
 	custom_grid = fill_2d_array(custom_grid,"fresh");
 }
 
-function updater(){
+function updater(grid){
 	grid = conway(grid);
 
 	for (let i = 0; i < (grid.length); i++){
@@ -125,8 +123,8 @@ function clear_custom(){
 function initial(ww,wh){
 	screen_x = ww;
   screen_y = wh;
-	x_dis = 20;
-	y_dis = 20;
+	x_dis = 100;
+	y_dis = 100;
 	xrows=Math.ceil(screen_x/x_dis);
 	yrows=Math.ceil(screen_y/y_dis);
 }
@@ -138,6 +136,8 @@ let fr = 10;
 let count = 0;
 let modee = 'sim';
 let canvas;
+let xrows;
+let yrows;
 
 function mousePressed(){
 	if (modee == "sim"){
@@ -174,6 +174,11 @@ function setup() {
 	canvas.position(0,0);
 	canvas.style('z-index','-1');
 
+  // grid = makearray(xrows,yrows);
+  // grid = fill_2d_array(grid, "random");
+  // console.log(grid);
+
+
 	background(lte);
 	strokeWeight(5);
 	stroke(lte);
@@ -195,6 +200,8 @@ function setup() {
 }
 
 function draw() {
+  displayer(grid);
+  updater(grid);
 	if (modee == "sim"){
 		updater(grid);
 	}
@@ -204,6 +211,7 @@ function draw() {
 	else{
 		updater(grid);
 	}
+  // console.log(grid);
 	// fill(transparentcol);
 	// rect(0,0,screen_x,screen_y);
 }

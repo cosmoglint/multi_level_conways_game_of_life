@@ -5,13 +5,13 @@ function cell(x,y){
 	this.yloc = this.y * x_dis;
 	this.xcen = this.xloc + x_dis/2;
 	this.ycen = this.yloc + y_dis/2;
-	this.alive = false;
 	this.out = lte;
 
 	this.live_val = 0;
-	this.col = color(30*this.live_val,40,255)
+	this.col = color(35*this.live_val,40,255);
 
 	this.show = function(){
+		this.colorer();
 		if (this.live_val == 0){
 			stroke(this.out);
 			fill('white');
@@ -28,23 +28,17 @@ function cell(x,y){
 	this.clicked = function(){
 		var d = dist(mouseX,mouseY,this.xcen,this.ycen);
 		if (d <= x_dis/2){
+			console.log(this.live_val);
 			this.increaser();
 			this.show();
 		}
 	}
 
-	this.flip = function(){
-		if (this.live_val ){
-			this.alive = false;
-		}
-		else{
-			this.alive = true;
-		}
-	}
-
+	
 	this.increaser = function(){
 		if (this.live_val < 5){
 			this.live_val += 1;
+			this.alive = true;
 		}
 		else{
 			this.live_val = 5;
@@ -54,9 +48,15 @@ function cell(x,y){
 	this.decreaser = function(){
 		if (this.live_val>0){
 			this.live_val -= 1;
+
 		}
 		else{
 			this.live_val = 0;
+			this.alive = false;
 		}
+	}
+
+	this.colorer = function(){
+		this.col = this.col = color(35*this.live_val,40,255);
 	}
 }
