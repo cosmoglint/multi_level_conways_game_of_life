@@ -45,7 +45,7 @@ function conway(lst){
 			neigh = 0;
 			newlst[i][j] = new cell(i,j);
 			for (indices of blocks){
-				neigh += lst[(indices[0]+xrows)%xrows][(indices[1]+yrows)%yrows].live_val<thecell.live_val ? 1 : 0;
+				neigh += lst[(indices[0]+xrows)%xrows][(indices[1]+yrows)%yrows].live_val>=thecell.live_val ? 1 : 0;
 			}
 			if (neigh == 3){
         newlst[i][j].increaser();
@@ -78,7 +78,7 @@ function resetsketch(){
 	custom_grid = fill_2d_array(custom_grid,"fresh");
 }
 
-function updater(grid){
+function updater(){
 	grid = conway(grid);
 
 	for (let i = 0; i < (grid.length); i++){
@@ -200,8 +200,6 @@ function setup() {
 }
 
 function draw() {
-  displayer(grid);
-  updater(grid);
 	if (modee == "sim"){
 		updater(grid);
 	}

@@ -34,7 +34,7 @@ function cell(x,y){
 		}
 	}
 
-	
+
 	this.increaser = function(){
 		if (this.live_val < 5){
 			this.live_val += 1;
@@ -57,6 +57,6 @@ function cell(x,y){
 	}
 
 	this.colorer = function(){
-		this.col = this.col = color(35*this.live_val,40,255);
+		this.col = color(35*this.live_val,40,255);
 	}
 }
