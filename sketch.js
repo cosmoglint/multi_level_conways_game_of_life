@@ -13,9 +13,12 @@ function fill_2d_array(arr,xm){
 			arr[i][j] = new cell(i,j);
 			if (xm == "fresh"){
 				arr[i][j].alive = false;
+        arr[i][j].live_val = 0;
+
 			}
 			else{
-			arr[i][j].alive = Boolean(floor(random(2)));
+			  arr[i][j].alive = Boolean(floor(random(2)));
+        arr[i][j].alive==0 ? arr[i][j].live_val=0 : arr[i][j].live_val=floor(random(1,5));
 			}
 		}
 	}
@@ -43,18 +46,23 @@ function conway(lst){
 				neigh += lst[(indices[0]+xrows)%xrows][(indices[1]+yrows)%yrows].alive ? 1 : 0;
 			}
 			if (neigh == 3 && thecell.alive == false){
+        newlst[i][j].live_val += 1;
 				newlst[i][j].alive = true;
 			}
 			else if(neigh <= 1 && thecell.alive == true){
+        newlst[i][j].live_val -= 1;
 				newlst[i][j].alive = false;
 			}
 			else if(neigh >= 4 && thecell.alive == true){
+        newlst[i][j].live_val -= 1;
 				newlst[i][j].alive = false;
 			}
 			else if((neigh == 2 || neigh == 3) && thecell.alive == true){
+        newlst[i][j].live_val += 1;
 				newlst[i][j].alive = lst[i][j].alive;
 			}
 			else{
+        newlst[i][j].live_val += 1;
 				newlst[i][j].alive = lst[i][j].alive;
 			}
 		}
